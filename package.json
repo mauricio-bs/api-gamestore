@@ -1,7 +1,7 @@
 {
   "name": "api-gamestore",
   "version": "1.0.0",
-  "description": "",
+  "description": "API SOLID to games ecommerce",
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,37 +12,53 @@
   "keywords": [
     "games",
     "store",
-    "purchase",
-    "ecommerce"
+    "ecommerce",
+    "SOLID",
+    "Docker-compose"
   ],
   "author": "MBS",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^3.7.0",
     "axios": "^0.21.4",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "date-fns": "^2.27.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "http": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.7",
     "morgan": "^1.10.0",
     "multer": "^1.4.3",
     "nodemailer": "^6.6.5",
-    "sequelize": "^6.6.5",
+    "prisma": "^3.7.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.6",
+    "@types/morgan": "^1.9.3",
+    "@types/multer": "^1.4.7",
+    "@types/nodemailer": "^6.4.4",
+    "@types/uuid": "^8.3.3",
+    "@types/yup": "^0.29.13",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import-helpers": "^1.2.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-promise": "^5.2.0",
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
-    "sequelize-cli": "^6.2.0",
     "sucrase": "^3.20.1"
   }
 }
