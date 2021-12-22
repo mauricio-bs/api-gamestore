@@ -1,25 +1,47 @@
 import { User } from '../../entities/User'
+import prisma from '../../../prisma/prisma'
 import { IUsersRepository } from './../IUsersRepository'
+import { hash } from 'bcryptjs'
 
 export class PostgresUsersRepository implements IUsersRepository {
-  private users: User[]
+  async findById(id: string): Promise<User> {
+    const user = await prisma.User.findUnique({ where: { id } })
 
-  findById(id: string): Promise<User> {
-    throw new Error('Method not implemented.')
+    return user
   }
-  findByEmail(email: string): Promise<User> {
-    throw new Error('Method not implemented.')
+  async findByEmail(email: string): Promise<User> {
+    const user = await prisma.User.findUnique({ where: { email } })
+
+    return user
   }
-  findMany(is_active?: boolean): Promise<User[]> {
-    throw new Error('Method not implemented.')
+  async findMany(is_active?: boolean): Promise<User[]> {
+    const users = await prisma.User.findMany({ where: { is_active } })
+
+    return users
   }
-  save(user: User): Promise<void> {
-    throw new Error('Method not implemented.')
+  async save(user: User): Promise<void> {
+    try {
+      await prisma.User.create({ data: { user } })
+
+      return
+    } catch (err) {
+      throw new Error(err.message)
+    }
   }
-  update(id: string, user: User): Promise<void> {
-    throw new Error('Method not implemented.')
+  async update(id: string, user: Partial<User>): Promise<void> {
+    try {
+      await prisma.User.update({ where: { id } }, { data: { user } })
+
+      return
+    } catch (err) {
+      throw new Error(err.message)
+    }
   }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(id: string): Promise<void> {
+    try {
+      await prisma.User.delete({ where: { id } })
+    } catch (err) {
+      throw new Error(err.message)
+    }
   }
 }

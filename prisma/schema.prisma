@@ -9,3 +9,237 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           String       @id @default(uuid())
+  name         String
+  email        String       @unique
+  password     String
+  admin        Boolean      @default(false)
+  is_active    Boolean      @default(true)
+  // Foreign Keys
+  user_address UserAddress?
+  sale         Sale[]
+  payment      Payment[]
+  // Timestamps
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+}
+
+model UserAddress {
+  id              String   @id @default(uuid())
+  zip_code        String
+  neighborhood    String
+  street          String
+  number          String
+  complement      String
+  reference_point String
+  // Foreign Keys
+  country         Country  @relation(fields: [country_id], references: [id])
+  country_id      Int
+  state           State    @relation(fields: [state_id], references: [id])
+  state_id        Int
+  city            City     @relation(fields: [city_id], references: [id])
+  city_id         Int
+  user            User     @relation(fields: [user_id], references: [id])
+  user_id         String   @unique
+  // Timestamps
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+}
+
+model Country {
+  id          Int           @id @default(autoincrement())
+  name        String
+  code        Int
+  // Foreign Keys
+  state       State[]
+  UserAddress UserAddress[]
+  // Timestamps
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+}
+
+model State {
+  id          Int           @id @default(autoincrement())
+  name        String
+  // Foreign Keys
+  country     Country       @relation(fields: [country_id], references: [id])
+  country_id  Int
+  City        City[]
+  UserAddress UserAddress[]
+  // Timestamps
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+}
+
+model City {
+  id          Int           @id @default(autoincrement())
+  name        String
+  // Foreign Keys
+  state       State         @relation(fields: [state_id], references: [id])
+  state_id    Int
+  UserAddress UserAddress[]
+  // Timestamps
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+}
+
+model Product {
+  id              String       @id @default(uuid())
+  name            String
+  description     String
+  sotck_quantity  Int
+  price           Decimal
+  path            String
+  is_active       Boolean
+  // Foreign Keys
+  category_id     Category[]
+  collection      Collection[]
+  platform        Platform[]
+  manufacturer    Manufacturer @relation(fields: [manufacturer_id], references: [id])
+  manufacturer_id String
+  Sale            Sale?        @relation(fields: [sale_id], references: [id])
+  sale_id         String?
+  // Timestamps
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  description String
+  is_active   Boolean
+  // Foreign Keys
+  product     Product? @relation(fields: [product_id], references: [id])
+  product_id  String?
+  // Timestamps
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Collection {
+  id         String   @id @default(uuid())
+  name       String
+  is_active  Boolean
+  // Foreign Keys
+  product    Product  @relation(fields: [product_id], references: [id])
+  product_id String
+  // Timestamps
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Platform {
+  id         String   @id @default(uuid())
+  name       String
+  is_active  Boolean
+  // Foreign Keys
+  product    Product? @relation(fields: [product_id], references: [id])
+  product_id String?
+  // Timestamps
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Manufacturer {
+  id         String    @id @default(uuid())
+  name       String
+  email      String
+  phone      String
+  cpnj       String
+  // Foreign Keys
+  products   Product[]
+  // Timestamps
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+}
+
+model Sale {
+  id                  String     @id @default(uuid())
+  amount              Decimal
+  discount_percentage Decimal?
+  discount_value      Decimal?
+  status              SaleStatus @default(PENDENTE)
+  date                DateTime   @default(now())
+  // Foreign Keys
+  products            Product[]
+  user                User       @relation(fields: [user_id], references: [id])
+  user_id             String
+  // Timestamps
+  created_at          DateTime   @default(now())
+  updated_at          DateTime   @updatedAt
+}
+
+enum SaleStatus {
+  PENDENTE
+  PAGO
+  CANCELADO
+}
+
+model Payment {
+  id                String           @id @default(uuid())
+  amount            Decimal
+  status            SaleStatus       @default(PENDENTE)
+  // Foreign Keys
+  user              User             @relation(fields: [user_id], references: [id])
+  user_id           String
+  payment_condition PaymentCondition @relation(fields: [condition_id], references: [id])
+  condition_id      Int
+  payment_form      PaymentForm      @relation(fields: [payment_form_id], references: [id])
+  payment_form_id   Int
+  // Timestamps
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @updatedAt
+}
+
+model PaymentCondition {
+  id          Int       @id @default(autoincrement())
+  description String
+  parcels     Int
+  is_active   Boolean
+  // Foreign Keys
+  payments    Payment[]
+  // Timestamps
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+}
+
+model PaymentForm {
+  id              Int             @id @default(autoincrement())
+  description     String
+  is_active       Boolean
+  //Foreign Keys
+  payment_parcels PaymentParcel[]
+  payments        Payment[]
+  // Timestamps
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @updatedAt
+}
+
+model PaymentParcel {
+  id              String      @id @default(uuid())
+  total_parcels   Int
+  current_parcel  Int
+  amount          Decimal
+  pay_date        DateTime?
+  due_date        DateTime
+  status          SaleStatus  @default(PENDENTE)
+  // Foreign Keys
+  payment_form    PaymentForm @relation(fields: [payment_form_id], references: [id])
+  payment_form_id Int
+  // Timestamps
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+}
+
+model CardFlags {
+  id         Int      @id @default(autoincrement())
+  flag       String
+  t_brand    String
+  // Timestamps
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+// model Offers {}

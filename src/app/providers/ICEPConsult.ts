@@ -5,6 +5,11 @@ interface Address {
   state: string
   city: string
   street: string
+  readonly errors?: Array<{
+    message: string
+    service: string
+  }>
+  readonly message?: string
 }
 
 export interface ICEPConsult {

@@ -1,27 +1,35 @@
-import { APIviaCEP } from '../../../services/viaCepApi'
+import cepPromise from 'cep-promise'
 
 interface ILocaleData {
-  data: {
-    cep: string
-    logradouro: string
-    bairro: string
-    uf: string
-    localidade: string
-  }
+  cep: string
+  street: string
+  neighborhood: string
+  city: string
+  state: string
+  readonly errors?: Array<{
+    message: string
+    service: string
+  }>
+  readonly message?: string
 }
 
 export default {
   async getCityByZipCode(zip_code: string) {
-    const { data }: ILocaleData = await APIviaCEP.get(`${zip_code}/json/`)
-    const { cep, logradouro, bairro, localidade, uf } = data
+    const data: ILocaleData = await cepPromise(zip_code)
+
+    if (data.errors) {
+      throw new Error(data.message)
+    }
+
+    const { cep, state, city, street, neighborhood } = data
 
     return {
       zip_code: cep,
-      neighborhood: bairro,
+      neighborhood,
       country: 'Brasil',
-      state: uf,
-      city: localidade,
-      street: logradouro
+      state,
+      city,
+      street
     }
   }
 }

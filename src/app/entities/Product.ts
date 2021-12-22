@@ -9,7 +9,6 @@ export class Product {
   public name: string
   public description: string
   public stock_quantity: number
-  public discount_percentage: number
   public price: number
   public path: string
   public collection?: Collection

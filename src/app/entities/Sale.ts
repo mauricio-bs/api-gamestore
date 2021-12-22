@@ -10,10 +10,10 @@ export class Sale {
   public amount: number
   public discount_percentage: number
   public discount_value: number
-  public payment: Payment
-  public user_id: User
+  public payment: Pick<Payment, 'id'>
+  public user_id: Pick<User, 'id' | 'email'>
   public date: Date
-  public status: number
+  public status: string
 
   constructor(props: Omit<Sale, 'id'>, id?: string) {
     Object.assign(this, props)

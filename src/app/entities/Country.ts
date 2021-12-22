@@ -1,5 +1,3 @@
-import { v4 } from 'uuid'
-
 export class Country {
   public readonly id?: number
   public name: string
