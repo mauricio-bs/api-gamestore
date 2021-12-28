@@ -1,5 +1,0 @@
-{
-    "exec": {
-        "js": "node -r sucrase/register"
-    }
-}

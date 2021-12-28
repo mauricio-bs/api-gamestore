@@ -2,11 +2,10 @@
   "name": "api-gamestore",
   "version": "1.0.0",
   "description": "API SOLID to games ecommerce",
-  "main": "src/server.js",
+  "main": "src/server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon",
-    "debug": "nodemon --inspect",
+    "dev": "ts-node-dev src/server.ts --watch",
     "start": "node"
   },
   "keywords": [
@@ -35,6 +34,8 @@
     "multer": "^1.4.3",
     "nodemailer": "^6.6.5",
     "prisma": "^3.7.0",
+    "socket.io": "^4.4.0",
+    "typescript": "^4.5.4",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"
   },
@@ -49,6 +50,7 @@
     "@types/multer": "^1.4.7",
     "@types/nodemailer": "^6.4.4",
     "@types/nodemon": "^1.19.1",
+    "@types/socket.io": "^3.0.2",
     "@types/uuid": "^8.3.3",
     "@types/yup": "^0.29.13",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
@@ -61,8 +63,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.2.0",
-    "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
-    "sucrase": "^3.20.3"
+    "sucrase": "^3.20.3",
+    "ts-node-dev": "^1.1.8"
   }
 }
